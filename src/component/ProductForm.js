@@ -1,32 +1,32 @@
 import { useState } from "react"
 import { useDispatch } from "react-redux";
-import { addProduct } from "../API/api";
-import { getProduct } from "../store/action/products";
+import { addProduct } from "../store/action/products";
 import BlurScrin from "./BlurScrin";
 
 export default function ProductForm(props){
     let dispatch = useDispatch()
     let [productName, setProductName] = useState("");
-    let [productNameError, setProductNameError] = useState("")
+    let [productNameError, setProductNameError] = useState(false)
     let [caunt, setCaunt] = useState(1)
-    let [weight, setWeight] = useState(1)
+    let [weight, setWeight] = useState(0)
 
     function BlurHeandler(e){
         let value = e.target.value
-         !!value.trim() || setProductNameError("Product name can't be empty")
+         !!value.trim() || setProductNameError(true)
         
     }
 
-    async function OnSubmit(e) {
+    function OnSubmit(e) {
         e.preventDefault()
-        if (!productNameError){
+        if (productName.trim()){
             let product = {
                 "name": productName,
-                "count": caunt,
+                "count": +caunt,
                 "weight": weight + "g"}
-           await addProduct(product)
-            props.FormTogel()
-            dispatch(getProduct())
+            dispatch(addProduct(product))
+            props.FormTogel() 
+        } else{
+            setProductNameError(true)
         }
     }
 
@@ -39,10 +39,11 @@ export default function ProductForm(props){
         <form  
             className="rounded-md bg-sky-500 p-6 text-lg text-white flex flex-col font-semibold reletiv z-10"
             onSubmit={OnSubmit}>
+
             <label htmlFor="productName" >
                 Product Name:
             </label>
-                {productNameError && <span className="text-sm text-rose-600">{productNameError}</span>}
+                {productNameError && <span className="text-sm text-rose-600">Product name can't be empty</span>}
                 <input 
                     type="text" 
                     id="productName" 
@@ -68,6 +69,7 @@ export default function ProductForm(props){
             <input 
                 type="number" 
                 min="0" 
+                step={50}
                 id="weight" 
                 className={inputClass} 
                 value={weight} 
@@ -76,7 +78,7 @@ export default function ProductForm(props){
             <div className="flex justify-between">
                 <button  className="border px-2 py-1 rounded-xl font-bold">Add Product</button>
 
-                    <button onClick={props.FormTogel} className="border px-2 py-1 rounded-xl font-bold">Cancel</button>
+                <button onClick={props.FormTogel} className="border px-2 py-1 rounded-xl font-bold">Cancel</button>
             </div>
         </form>
         </div>

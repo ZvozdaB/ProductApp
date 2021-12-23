@@ -14,7 +14,7 @@ export default function Header() {
         <div className="bg-sky-500">
             <header className="wraper flex justify-between text-white py-2 text-xl">
                 <Link to="/">Product</Link>
-                <div onClick={FormTogel}>+ Add Product</div>
+                    <div onClick={FormTogel} className="cursor-pointer ">+ Add Product</div>
             </header>
         </div>
             {formOpen && <ProductForm FormTogel={FormTogel}/>}

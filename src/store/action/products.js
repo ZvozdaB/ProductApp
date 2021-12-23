@@ -1,11 +1,13 @@
-import { fetchProduct } from "../../API/api"
-import { PRODUCT_GET_SUCCESS, PRODUCT_LOADING_END, PRODUCT_LOADING_START } from "./actionType"
+
+import { CHANGE_SORT, PRODUCT_GET_SUCCESS, PRODUCT_LOADING_END, PRODUCT_LOADING_START, PRODUCT_SORT } from "./actionType"
 
 export function getProduct(){
     return async dispatch =>{
         dispatch(productLoadingStart())
-        let products = await fetchProduct()
+        let resp = await fetch("http://localhost:3001/product")
+        let products = await resp.json()
         dispatch(productGetSuccess(products))
+        dispatch(sortProduct())
         dispatch(productLoadingEnd())
     }
 }
@@ -20,8 +22,7 @@ export function addProduct(product){
             body: JSON.stringify(product)
         }
         let resp = await fetch("http://localhost:3001/product",options)
-        // dispatch(productGetSuccess(products))
-        // dispatch(productLoadingEnd())
+        dispatch(getProduct())
     }
 }
 export function deleteProduct(productId) {
@@ -30,7 +31,18 @@ export function deleteProduct(productId) {
         dispatch(getProduct())
     }
 }
+export function changeSort(sort){
+    return async dispatch => {
+        dispatch({type:CHANGE_SORT, sort})
+        dispatch(sortProduct())
+    }
+}
 
+export function sortProduct(){
+    return {
+        type: PRODUCT_SORT,
+    }
+}
 
 
 function productGetSuccess(products){

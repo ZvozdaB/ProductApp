@@ -1,10 +1,22 @@
 {
   "product": [
     {
-      "name": "dddd",
+      "name": "хдіб",
+      "count": 2,
+      "weight": "0g",
+      "id": 8
+    },
+    {
+      "name": "мясо",
       "count": 1,
-      "weight": "1g",
-      "id": 1
+      "weight": "0g",
+      "id": 9
+    },
+    {
+      "name": "капуста",
+      "count": 1,
+      "weight": "1000g",
+      "id": 10
     }
   ],
   "comments": [
